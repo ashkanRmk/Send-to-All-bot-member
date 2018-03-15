@@ -44,20 +44,22 @@ public class ResultActivity extends AppCompatActivity {
         names.put("84989023", "masoud");
         names.put("107230941", "amir");
 
-        String tmp = "";
-        for (String id : notSend)
-        {
-            if (test)
+        String tmp;
+        if (notSend != null) {
+            for (String id : notSend)
             {
-                tmp = tv_ids.getText().toString() + "\n" + id + " " + names.get(id);
-                tv_ids.setText(tmp);
-            }
-            else {
-                tmp = tv_ids.getText().toString() + "\n" + id;
-                tv_ids.setText(tmp);
+                if (test)
+                {
+                    tmp = tv_ids.getText().toString() + "\n" + id + " " + names.get(id);
+                    tv_ids.setText(tmp);
+                }
+                else {
+                    tmp = tv_ids.getText().toString() + "\n" + id;
+                    tv_ids.setText(tmp);
+                }
             }
         }
-        if (tmp == "") tv_ids.setText("Nothing!");
+        else tv_ids.setText("Nothing!");
 
     }
 }

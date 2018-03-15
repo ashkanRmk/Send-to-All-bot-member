@@ -1,20 +1,16 @@
 package com.example.smn.paypingbotbroadcast;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Vibrator;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -28,6 +24,14 @@ import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
 import com.pengrad.telegrambot.response.SendResponse;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,8 +50,11 @@ public class ScrollingActivity extends AppCompatActivity {
     final ArrayList<String> testChatIds= new ArrayList<>();
     final ArrayList<String> notSendIds= new ArrayList<>();
 
-    String BOT_TOKEN = "518881868:111111111111111111111111-H2XJBzZtlxY";
+    String BOT_TOKEN = "BOT_TOKEN";
+    String TG_URL_ID = "https://GET-MEMBER-IDS";
 
+    public static final MediaType JSON
+            = MediaType.parse("application/json; charset=utf-8");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +65,32 @@ public class ScrollingActivity extends AppCompatActivity {
 
         final TelegramBot bot = new TelegramBot(BOT_TOKEN);
 
-        testChatIds.add("109416039"); //me
-        testChatIds.add("90210964"); //smn
-        testChatIds.add("152445158"); //nima
-        testChatIds.add("55622476"); //saeed
-        testChatIds.add("56038909"); //baride
-        testChatIds.add("84989023"); //masood
-        testChatIds.add("107230941"); //amir
+        testChatIds.add("11111111"); //test
+        testChatIds.add("11111111"); //test
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String json = "";
+                    String response = post(TG_URL_ID, json);
+//                    Log.d("RESPONSE: ", response);
+                    JSONArray jsnArray = new JSONArray(response);
+
+                    for (int i = 0; i < jsnArray.length(); i++){
+                        chatIds.add(jsnArray.getString(i));
+                    }
+
+                    Log.d("chatIds: ", chatIds.get(255));
+
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+
 
         Button btn_test = (Button) findViewById(R.id.btn_test);
         final EditText ed_msg = (EditText) findViewById(R.id.ed_message);
@@ -90,8 +116,7 @@ public class ScrollingActivity extends AppCompatActivity {
         md_swith.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) md[0] = true;
-                else md[0] = false;
+                md[0] = b;
             }
         });
 
@@ -198,7 +223,7 @@ public class ScrollingActivity extends AppCompatActivity {
                                                     }
 
                                                     try {
-                                                        Thread.sleep(2000);
+                                                        Thread.sleep(50);
                                                     } catch (InterruptedException e) {
                                                         e.printStackTrace();
                                                     }
@@ -353,7 +378,7 @@ public class ScrollingActivity extends AppCompatActivity {
                                             }
 
                                             try {
-                                                Thread.sleep(2000);
+                                                Thread.sleep(50);
                                             } catch (InterruptedException e) {
                                                 e.printStackTrace();
                                             }
@@ -394,6 +419,20 @@ public class ScrollingActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    String post(String url, String json) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = RequestBody.create(JSON, json);
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+        Response response = client.newCall(request).execute();
+        return response.body().string();
+    }
+
+
 
     boolean doubleBackToExitPressedOnce = false;
 
