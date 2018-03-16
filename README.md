@@ -1,8 +1,6 @@
 # Send to All bot member
 
 
-![Travis](https://img.shields.io/travis/USER/REPO.svg)
-
 ![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)  ![PullRequest](https://img.shields.io/badge/Pull%20Requst-Accepted!-brightgreen.svg)
 
 
