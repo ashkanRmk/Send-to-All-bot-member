@@ -15,7 +15,11 @@ You can configure delay for sending each message depending on your member's coun
 
 You have to just replace your BOT-TOKEN in this directory: `/app/src/main/java/com/example/smn/paypingbotbroadcast/ScrollingActivity.java` and set your POST/GET method to get your telegram bot member Ids.
 
-Build... Done!
+#### Dependencies
+
+This app is based on [Java Telegram API](https://github.com/pengrad/java-telegram-bot-api), one of [official telegram bot api](https://core.telegram.org/bots/samples#java). You have follow their instruction to add this library to your project.
+
+Finally Build... Done!
 
 ## License
 
